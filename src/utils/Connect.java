@@ -8,10 +8,10 @@ import java.sql.ResultSetMetaData;
 import java.sql.Statement;
 
 public class Connect {
-	private static String USERNAME = "Root";
+	private static String USERNAME = "root";
 	private static String PASSWORD = "";
 	private static String HOST = "host:3306";
-	private static String DATABASE = "users";
+	private static String DATABASE = "Calouself";
 	private static String CONNECTION = String.format("jdbc:mysql://%s/%s", HOST, DATABASE);
 
 	public static ResultSet rs;
