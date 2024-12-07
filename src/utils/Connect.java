@@ -10,7 +10,7 @@ import java.sql.Statement;
 public class Connect {
 	private static String USERNAME = "root";
 	private static String PASSWORD = "";
-	private static String HOST = "host:3306";
+	private static String HOST = "localhost:3306";
 	private static String DATABASE = "Calouself";
 	private static String CONNECTION = String.format("jdbc:mysql://%s/%s", HOST, DATABASE);
 
@@ -35,9 +35,13 @@ public class Connect {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			con = DriverManager.getConnection(CONNECTION, USERNAME, PASSWORD);
 			st = con.createStatement();
+			System.out.println("DB Connected!");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+//	public void insert
+	
 }
