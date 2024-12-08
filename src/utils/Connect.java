@@ -5,39 +5,50 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Connect {
-	private static String USERNAME = "Root";
+	private static String USERNAME = "root";
 	private static String PASSWORD = "";
-	private static String HOST = "host:3306";
-	private static String DATABASE = "users";
+	private static String HOST = "localhost:3306";
+	private static String DATABASE = "Calouself";
 	private static String CONNECTION = String.format("jdbc:mysql://%s/%s", HOST, DATABASE);
-
-	public static ResultSet rs;
-	private ResultSetMetaData rsm;
-	private PreparedStatement ps;
 	
-	private static Connect conn;
-	private Connection con;
-	private Statement st;
+	private static Connect database;
+	Connection con;
 	
 	public static Connect getInstance() {
-		if(conn == null) {
-			conn = new Connect();
+		if(database == null) {
+			database = new Connect();
 		}
 		
-		return conn;
+		return database;
 	}
 	
 	private Connect() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			con = DriverManager.getConnection(CONNECTION, USERNAME, PASSWORD);
-			st = con.createStatement();
+			System.out.println("DB Connected!");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+
+	public PreparedStatement prepareStatement(String query) {
+		// TODO Auto-generated method stub
+		PreparedStatement pst = null;
+		try {
+			pst = con.prepareStatement(query);
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		return pst;
+	}
+	
+	
+	
 }
