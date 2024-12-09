@@ -1,4 +1,4 @@
-package viewFactories;
+package views;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -13,7 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
-public class viewFactory {
+public class RegView {
 
 	public static Scene createRegView() {
 		VBox v = new VBox();

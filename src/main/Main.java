@@ -8,7 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import viewFactories.viewFactory;
+import views.RegView;
 
 public class Main extends Application implements EventHandler<ActionEvent> {
 	
@@ -20,7 +20,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
 	public void init() {
 		appScenes = new ArrayList<Scene>();
-		appScenes.add(viewFactory.createRegView());
+		appScenes.add(RegView.createRegView());
 		new MainController();
 		
 	}
