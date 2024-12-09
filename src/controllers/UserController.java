@@ -3,6 +3,7 @@ package controllers;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import Models.User;
 import utils.Connect;
 
 public class UserController {
@@ -14,77 +15,80 @@ public class UserController {
 	}
 
 	public void login(String Username, String Password) {
-		
-		if(Username.length() > 0) {
-			// code check to database
+		if(User.getUser(Username) != null) {
+			return;
 		}
 		
-		if(Password.length() > 0) {
-			// code check to database
+		if(checkAccountValidation(Username, Password, null, null)) {
+			return;
 		}
 		
+		//Switch view
 	}
 	
-	public boolean register(String Username, String Password, String Phone_Number, String Address, String Role) {
-		
-		boolean validate = checkAccountValidation(Username, Password, Phone_Number, Address);
-		if(validate == true) {
-			// code insert data to database
-			String query = "INSERT INTO users(username, password, phone, address, role) VALUES(?, ?, ?, ?, ?)";
-			
-			try (PreparedStatement pst = db.prepareStatement(query)){
-				
-				pst.setString(1, Username);
-				pst.setString(2, Password);
-				pst.setString(3, Phone_Number);
-				pst.setString(4, Address);
-				pst.setString(5, Role);
-				pst.executeUpdate();
-				
-				
-			} catch (SQLException e) {
-				// TODO: handle exception
-				e.printStackTrace();
-			}
-			
-			System.out.println("Insert OK");
-			return true;
-		}else {
-			return false;
+	public void register(String Username, String Password, String Phone_Number, String Address) {
+		if(User.getUser(Username) != null) {
+			return;
 		}
 		
+		if(checkAccountValidation(Username, Password, Phone_Number, Address)) {
+			return;
+		}
+		
+		User newUser = new User(0, Username, Password, Address, Phone_Number, Address);
+		newUser.insertUser();
 	}
 	
-	private boolean checkAccountValidation(String Username, String Password, String Phone_Number, String Address) {
+	public boolean checkAccountValidation(String Username, String Password, String Phone_Number, String Address) {
 		
 		boolean status = false;
+		status = validateUsername(Username);
+		status = validatePassword(Username);
 		
-		if(Username.length() >= 3){
-			// masukin code buat cek apakah username yang diinput ada yang sama dengan yang udah
-			// ada di database
-			
-			status = true;
-		}
-		
-		if(Password.length() >= 8) {
-			if(Password.contains("!") || Password.contains("@") || Password.contains("#") || Password.contains("$") || Password.contains("%") || Password.contains("^") || Password.contains("&") || Password.contains("*")) {
-				status = true;
-			}
-		}
-		
-		if(Phone_Number.contains("+62")) {
-			String check = Phone_Number.substring(1);
-			if(check.length() >= 10 ) {
-				status = true;
-			}
-		}
-		
-		if(Address.length() == 0) {
-			return false;
+		if((Phone_Number != null) && (Address != null)) {
+			status = validateAddress(Address);
+			status = validatePhoneNumber(Phone_Number);
 		}
 		
 		return status;
 	}
+
+	private boolean validatePhoneNumber(String phone_Number) {
+		String temp = phone_Number;
+		temp.replace("+62", "+");
+		
+		if((temp.length() == 10) && (phone_Number.contains("+62"))) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	private boolean validateAddress(String address) {
+		if(address == "") {
+			return true;
+		}
+		
+		return false;
+	}
+
+	private boolean validatePassword(String username) {
+		if((username == null) || (!(username.matches(".*[!@#$%^&*].*")))) {
+			return true;
+		}
+		
+		return false;
+	}
+
+	private boolean validateUsername(String username) {
+		if((username == null) || (username.length() < 3)) {
+			return true;
+		}
+		
+		return false;
+	}
 	
-	
+	private User requestUser(String username) {
+		return User.getUser(username);
+	}
 }
