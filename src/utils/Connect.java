@@ -50,5 +50,7 @@ public class Connect {
 	}
 	
 	
-	
+	public Connection getConnection() {
+		return con;
+	}
 }

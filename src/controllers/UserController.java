@@ -1,19 +1,13 @@
 package controllers;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-
 import Models.User;
-import utils.Connect;
 
 public class UserController {
-	
-	private Connect db;
-	
-	public UserController() {
-		this.db = Connect.getInstance();
-	}
 
+	public UserController() {
+		
+	}
+	
 	public void login(String Username, String Password) {
 		if(User.getUser(Username) != null) {
 			return;
@@ -35,7 +29,7 @@ public class UserController {
 			return;
 		}
 		
-		User newUser = new User(0, Username, Password, Address, Phone_Number, Address);
+		User newUser = new User(Username, Password, Address, Phone_Number, Address);
 		newUser.insertUser();
 	}
 	
@@ -73,7 +67,8 @@ public class UserController {
 	}
 
 	private boolean validatePassword(String username) {
-		if((username == null) || (!(username.matches(".*[!@#$%^&*].*")))) {
+		if((username == null) || (username.contains("!")) || (username.contains("@")) || (username.contains("#")) || (username.contains("$"))
+				|| (username.contains("%")) || (username.contains("^")) || (username.contains("&")) || (username.contains("*"))) {
 			return true;
 		}
 		
