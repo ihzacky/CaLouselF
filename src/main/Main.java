@@ -10,18 +10,9 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import views.RegView;
 
-public class Main extends Application implements EventHandler<ActionEvent> {
-	
-	ArrayList<Scene> appScenes = null;
+public class Main extends Application {
 
 	public Main() {
-		
-	}
-
-	public void init() {
-		appScenes = new ArrayList<Scene>();
-		appScenes.add(RegView.createRegView());
-		new MainController();
 		
 	}
 	
@@ -31,22 +22,7 @@ public class Main extends Application implements EventHandler<ActionEvent> {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
-		
-		init();
-		primaryStage.setTitle("CaLouselF");
-		primaryStage.setScene(appScenes.get(0));
-		primaryStage.show();
-	}
-	
-	public Stage getPrimaryStage() {
-		return getPrimaryStage();
-	}
-
-	@Override
-	public void handle(ActionEvent event) {
-		// TODO Auto-generated method stub
-		
+		new RegView(primaryStage);
 	}
 
 }
