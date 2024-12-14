@@ -19,8 +19,9 @@ public class Item {
 	private String Item_status;
 	private String Item_wishlist;
 	private String Item_offer_status;
-	
-	public Item(String item_name, String item_size, String item_price, String item_category) {
+	private String user_id;
+
+	public Item(String item_name, String item_size, String item_price, String item_category, String user_id) {
 		Item_id = genId();
 		Item_name = item_name;
 		Item_size = item_size;
@@ -29,10 +30,11 @@ public class Item {
 		Item_status = "pending";
 		Item_wishlist = "none";
 		Item_offer_status = "none";
+		this.user_id = user_id;
 	}
 	
 	public Item(String item_id, String item_name, String item_size, String item_price, String item_category,
-			String item_status, String item_wishlist, String item_offer_status) {
+			String item_status, String item_wishlist, String item_offer_status, String user_id) {
 		super();
 		Item_id = item_id;
 		Item_name = item_name;
@@ -42,6 +44,7 @@ public class Item {
 		Item_status = item_status;
 		Item_wishlist = item_wishlist;
 		Item_offer_status = item_offer_status;
+		this.user_id = user_id;
 	}
 
 	private String genId() {
@@ -49,10 +52,10 @@ public class Item {
 		return "IT" + Integer.toString(rn.nextInt(10)) + Integer.toString(rn.nextInt(10)) + Integer.toString(rn.nextInt(10));
 	}
 	
-	public boolean UploadItem(String item_name, String item_category, String item_size, String item_price) {
+	public boolean UploadItem(String item_name, String item_category, String item_size, String item_price, String user_id) {
 		
 		String query = "INSERT INTO items (Item_id, Item_name, Item_size, Item_price, "
-				+ "Item_category, Item_status, Item_wishlist, Item_offer_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?);";
+				+ "Item_category, Item_status, Item_wishlist, Item_offer_status, user_id) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		final Connect con = Connect.getInstance();
 		
 		try {
@@ -65,28 +68,36 @@ public class Item {
 			pst.setString(6, this.Item_status);
 			pst.setString(7, this.Item_wishlist);
 			pst.setString(8, this.Item_offer_status);
+			pst.setString(9, this.user_id);
 			pst.executeUpdate();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 		
 		return true;
 	}
 	
-	public static List<Item> selectAll() {
-		List<Item> itemList = new ArrayList<Item>();
+	public static List<Item> selectAll(String col, String req) {
+		List<Item> itemList = new ArrayList<>();
 		String query = "SELECT * FROM items";
+		
+		if((col != null) && (req != null)) {
+			query = query + " WHERE " + col + " = " + "?"; 
+		}
+		
 		final Connect con = Connect.getInstance();
 		
 		try {
-			Statement st = con.getConnection().createStatement();
-			ResultSet rs = st.executeQuery(query); 
+			PreparedStatement pst = con.prepareStatement(query);
+			pst.setString(1, req);
+			ResultSet rs = pst.executeQuery(); 
 			
 			while(rs.next()) {
 				itemList.add(new Item(rs.getString("Item_id"), rs.getString("Item_name"), rs.getString("Item_size"), 
 						rs.getString("Item_price"), rs.getString("Item_category"), rs.getString("Item_status"), 
-						rs.getString("Item_wishlist"), rs.getString("Item_offer_status")));
+						rs.getString("Item_wishlist"), rs.getString("Item_offer_status"), rs.getString("user_id")));
 			}
 		}
 		catch(SQLException e) {
@@ -159,6 +170,14 @@ public class Item {
 	}
 	public void setItem_offer_status(String item_offer_status) {
 		Item_offer_status = item_offer_status;
+	}
+	
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
 	}
 	
 }

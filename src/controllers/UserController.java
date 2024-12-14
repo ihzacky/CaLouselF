@@ -8,36 +8,41 @@ public class UserController {
 		
 	}
 	
-	public void login(String Username, String Password) {
-		if(User.getUser(Username) != null) {
-			return;
+	public static User login(String Username, String Password) {
+		User user = User.getUser(Username);
+		
+		if(user == null) {
+			return null;
 		}
 		
-		if(checkAccountValidation(Username, Password, null, null)) {
-			return;
+		if((!user.getPassword().equals(Password)) || (!user.getUsername().equals(Username))) {
+			return null;
 		}
 		
-		//Switch view
+		return user;
 	}
 	
-	public void register(String Username, String Password, String Phone_Number, String Address) {
+	public static User register(String Username, String Password, String Phone_Number, String Address, String Role) {
+		User newUser = null; 
+		
 		if(User.getUser(Username) != null) {
-			return;
+			return null;
 		}
 		
 		if(checkAccountValidation(Username, Password, Phone_Number, Address)) {
-			return;
+			return null;
 		}
 		
-		User newUser = new User(Username, Password, Address, Phone_Number, Address);
+		newUser = new User(Username, Password, Phone_Number, Address, Role);
 		newUser.insertUser();
+		return newUser;
 	}
 	
-	public boolean checkAccountValidation(String Username, String Password, String Phone_Number, String Address) {
+	public static boolean checkAccountValidation(String Username, String Password, String Phone_Number, String Address) {
 		
 		boolean status = false;
 		status = validateUsername(Username);
-		status = validatePassword(Username);
+		status = validatePassword(Password);
 		
 		if((Phone_Number != null) && (Address != null)) {
 			status = validateAddress(Address);
@@ -47,18 +52,18 @@ public class UserController {
 		return status;
 	}
 
-	private boolean validatePhoneNumber(String phone_Number) {
+	private static boolean validatePhoneNumber(String phone_Number) {
 		String temp = phone_Number;
-		temp.replace("+62", "+");
+		temp = temp.replace("+62", "+");
 		
 		if((temp.length() == 10) && (phone_Number.contains("+62"))) {
-			return true;
+			return false;
 		}
 		
-		return false;
+		return true;
 	}
 
-	private boolean validateAddress(String address) {
+	private static boolean validateAddress(String address) {
 		if(address == "") {
 			return true;
 		}
@@ -66,17 +71,17 @@ public class UserController {
 		return false;
 	}
 
-	private boolean validatePassword(String username) {
-		if((username == null) || (username.contains("!")) || (username.contains("@")) || (username.contains("#")) || (username.contains("$"))
-				|| (username.contains("%")) || (username.contains("^")) || (username.contains("&")) || (username.contains("*"))) {
-			return true;
+	private static boolean validatePassword(String username) {
+		if((username.length() >= 8) && ((username.contains("!")) || (username.contains("@")) || (username.contains("#")) || (username.contains("$"))
+				|| (username.contains("%")) || (username.contains("^")) || (username.contains("&")) || (username.contains("*")))) {
+			return false;
 		}
 		
-		return false;
+		return true;
 	}
 
-	private boolean validateUsername(String username) {
-		if((username == null) || (username.length() < 3)) {
+	private static boolean validateUsername(String username) {
+		if((username == "") || (username.length() < 3)) {
 			return true;
 		}
 		

@@ -16,7 +16,7 @@ public class User {
 	private String phone_number;
 	private String role;
 
-	public User(String username, String password, String address, String phone_number, String role) {
+	public User(String username, String password, String phone_number, String address, String role) {
 		this.user_Id = genId();
 		this.username = username;
 		this.password = password;
@@ -31,15 +31,17 @@ public class User {
 	}
 
 	public void insertUser() {
-		String query = "INSERT INTO users (username, password, phone_number, roles) VALUES(?, ?, ?, ?);";
+		String query = "INSERT INTO users (user_Id, username, password, phone_number, address, roles) VALUES(?, ?, ?, ?, ?, ?);";
 		final Connect con = Connect.getInstance();
 		
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
-			pst.setString(1, this.username);
-			pst.setString(2, this.password);
-			pst.setString(3, this.phone_number);
-			pst.setString(4, this.role);
+			pst.setString(1, this.user_Id);
+			pst.setString(2, this.username);
+			pst.setString(3, this.password);
+			pst.setString(4, this.phone_number);
+			pst.setString(5, this.address);
+			pst.setString(6, this.role);
 			pst.executeUpdate();
 		}
 		catch(SQLException e) {
@@ -49,18 +51,18 @@ public class User {
 	
 	public static User getUser(String username) {
 		User user = null;
-		String query = "SELECT users FROM Calouself WHERE username = ?";
+		String query = "SELECT * FROM users WHERE username = ?";
 		final Connect con = Connect.getInstance();
 		
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
-			pst.setString(1, "\"" + username + "\"");
+			pst.setString(1, username);
 			
-			ResultSet rs = pst.executeQuery(query); 
+			ResultSet rs = pst.executeQuery(); 
 			
 			while(rs.next()) {
 				user = new User(rs.getString("username"), rs.getString("password"), 
-						rs.getString("address"),rs.getString("phone_number"), rs.getString("role"));
+						rs.getString("address"),rs.getString("phone_number"), rs.getString("roles"));
 				user.setUser_Id(rs.getString("user_Id"));
 			}
 		}
