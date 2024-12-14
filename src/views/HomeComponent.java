@@ -27,7 +27,6 @@ public abstract class HomeComponent extends VBox {
 	Stage stage;
 	HBox mainWrapper;
 	HBox roleWrapper;
-	ObservableList<Item> obs;
 
 	public abstract void setTableItems();
 	
@@ -39,17 +38,16 @@ public abstract class HomeComponent extends VBox {
 	
 	private void init() {
 		categoryCol = new TableColumn("category");
-		categoryCol.setCellValueFactory(new PropertyValueFactory<>("category"));
+		categoryCol.setCellValueFactory(new PropertyValueFactory<>("itemCategory"));
 		
 		nameCol = new TableColumn("name");
-		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+		nameCol.setCellValueFactory(new PropertyValueFactory<>("itemName"));
 		
 		sizeCol = new TableColumn("size");
-		sizeCol.setCellValueFactory(new PropertyValueFactory<>("size"));
+		sizeCol.setCellValueFactory(new PropertyValueFactory<>("itemSize"));
 		
 		table = new TableView<Item>();
 		table.getColumns().addAll(categoryCol, nameCol, sizeCol);
-		setTableItems();
 		
 		mainNameLabel = new Label(user.getUsername());
 		mainNameLabel.setFont(Font.font("Arial", FontWeight.BOLD, 24));

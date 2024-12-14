@@ -15,7 +15,7 @@ public class ItemController {
 			return false;
 		}
 		else {
-			Item newItem = new Item(item_name, item_category, item_size, item_price, user_id);
+			Item newItem = new Item(item_name, item_size, item_price, item_category, user_id);
 			cond = newItem.UploadItem(item_name, item_category, item_size, item_price, user_id);
 		}
 		

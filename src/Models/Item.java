@@ -11,40 +11,40 @@ import java.util.Random;
 import utils.Connect;
 
 public class Item {
-	private String Item_id;
-	private String Item_name;
-	private String Item_size;
-	private String Item_price;
-	private String Item_category;
-	private String Item_status;
-	private String Item_wishlist;
-	private String Item_offer_status;
-	private String user_id;
+	private String itemId;
+	private String itemName;
+	private String itemSize;
+	private String itemPrice;
+	private String itemCategory;
+	private String itemStatus;
+	private String itemWishlist;
+	private String itemOfferStatus;
+	private String userId;
 
 	public Item(String item_name, String item_size, String item_price, String item_category, String user_id) {
-		Item_id = genId();
-		Item_name = item_name;
-		Item_size = item_size;
-		Item_price = item_price;
-		Item_category = item_category;
-		Item_status = "pending";
-		Item_wishlist = "none";
-		Item_offer_status = "none";
-		this.user_id = user_id;
+		itemId = genId();
+		itemName = item_name;
+		itemSize = item_size;
+		itemPrice = item_price;
+		itemCategory = item_category;
+		itemStatus = "pending";
+		itemWishlist = "none";
+		itemOfferStatus = "none";
+		this.userId = user_id;
 	}
 	
 	public Item(String item_id, String item_name, String item_size, String item_price, String item_category,
 			String item_status, String item_wishlist, String item_offer_status, String user_id) {
 		super();
-		Item_id = item_id;
-		Item_name = item_name;
-		Item_size = item_size;
-		Item_price = item_price;
-		Item_category = item_category;
-		Item_status = item_status;
-		Item_wishlist = item_wishlist;
-		Item_offer_status = item_offer_status;
-		this.user_id = user_id;
+		itemId = item_id;
+		itemName = item_name;
+		itemSize = item_size;
+		itemPrice = item_price;
+		itemCategory = item_category;
+		itemStatus = item_status;
+		itemWishlist = item_wishlist;
+		itemOfferStatus = item_offer_status;
+		this.userId = user_id;
 	}
 
 	private String genId() {
@@ -60,15 +60,15 @@ public class Item {
 		
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
-			pst.setString(1, this.Item_id);
-			pst.setString(2, this.Item_name);
-			pst.setString(3, this.Item_size);
-			pst.setString(4, this.Item_price);
-			pst.setString(5, this.Item_category);
-			pst.setString(6, this.Item_status);
-			pst.setString(7, this.Item_wishlist);
-			pst.setString(8, this.Item_offer_status);
-			pst.setString(9, this.user_id);
+			pst.setString(1, this.itemId);
+			pst.setString(2, this.itemName);
+			pst.setString(3, this.itemSize);
+			pst.setString(4, this.itemPrice);
+			pst.setString(5, this.itemCategory);
+			pst.setString(6, this.itemStatus);
+			pst.setString(7, this.itemWishlist);
+			pst.setString(8, this.itemOfferStatus);
+			pst.setString(9, this.userId);
 			pst.executeUpdate();
 		}
 		catch(SQLException e) {
@@ -91,7 +91,11 @@ public class Item {
 		
 		try {
 			PreparedStatement pst = con.prepareStatement(query);
-			pst.setString(1, req);
+			
+			if((col != null) && (req != null)) {
+				pst.setString(1, req); 
+			}
+			
 			ResultSet rs = pst.executeQuery(); 
 			
 			while(rs.next()) {
@@ -122,62 +126,77 @@ public class Item {
 		
 		return true;
 	}
-	
-	public String getItem_id() {
-		return Item_id;
-	}
-	public void setItem_id(String item_id) {
-		Item_id = item_id;
-	}
-	public String getItem_name() {
-		return Item_name;
-	}
-	public void setItem_name(String item_name) {
-		Item_name = item_name;
-	}
-	public String getItem_size() {
-		return Item_size;
-	}
-	public void setItem_size(String item_size) {
-		Item_size = item_size;
-	}
-	public String getItem_price() {
-		return Item_price;
-	}
-	public void setItem_price(String item_price) {
-		Item_price = item_price;
-	}
-	public String getItem_category() {
-		return Item_category;
-	}
-	public void setItem_category(String item_category) {
-		Item_category = item_category;
-	}
-	public String getItem_status() {
-		return Item_status;
-	}
-	public void setItem_status(String item_status) {
-		Item_status = item_status;
-	}
-	public String getItem_wishlist() {
-		return Item_wishlist;
-	}
-	public void setItem_wishlist(String item_wishlist) {
-		Item_wishlist = item_wishlist;
-	}
-	public String getItem_offer_status() {
-		return Item_offer_status;
-	}
-	public void setItem_offer_status(String item_offer_status) {
-		Item_offer_status = item_offer_status;
-	}
-	
-	public String getUser_id() {
-		return user_id;
+
+	public String getItemId() {
+		return itemId;
 	}
 
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
+	}
+
+	public String getItemSize() {
+		return itemSize;
+	}
+
+	public void setItemSize(String itemSize) {
+		this.itemSize = itemSize;
+	}
+
+	public String getItemPrice() {
+		return itemPrice;
+	}
+
+	public void setItemPrice(String itemPrice) {
+		this.itemPrice = itemPrice;
+	}
+
+	public String getItemCategory() {
+		return itemCategory;
+	}
+
+	public void setItemCategory(String itemCategory) {
+		this.itemCategory = itemCategory;
+	}
+
+	public String getItemStatus() {
+		return itemStatus;
+	}
+
+	public void setItemStatus(String itemStatus) {
+		this.itemStatus = itemStatus;
+	}
+
+	public String getItemWishlist() {
+		return itemWishlist;
+	}
+
+	public void setItemWishlist(String itemWishlist) {
+		this.itemWishlist = itemWishlist;
+	}
+
+	public String getItemOfferStatus() {
+		return itemOfferStatus;
+	}
+
+	public void setItemOfferStatus(String itemOfferStatus) {
+		this.itemOfferStatus = itemOfferStatus;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	
 }

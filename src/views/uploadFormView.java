@@ -47,15 +47,15 @@ public class uploadFormView extends VBox {
 		
 		catTf = new TextField();
 		catLabel = new Label("Category");
-		catLabel.setLabelFor(nameTf);
+		catLabel.setLabelFor(catTf);
 		
 		sizeTf = new TextField();
 		sizeLabel = new Label("Size");
-		sizeLabel.setLabelFor(nameTf);
+		sizeLabel.setLabelFor(sizeTf);
 		
 		priceTf = new TextField();
 		priceLabel = new Label("Price");
-		priceLabel.setLabelFor(nameTf);
+		priceLabel.setLabelFor(priceTf);
 		
 		uploadBtn = new Button("Upload");
 		backBtn = new Button("Back");
@@ -67,7 +67,7 @@ public class uploadFormView extends VBox {
 		uploadBtn.setOnAction(e -> {
 			String name = nameTf.getText();
 			String category = catTf.getText();
-			String size = priceTf.getText();
+			String size = sizeTf.getText();
 			String price = priceTf.getText();
 			
 			boolean cond = ItemController.InputData(name, category, size, price, user.getUser_Id());

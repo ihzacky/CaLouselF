@@ -16,10 +16,12 @@ public class SellerHomeView extends HomeComponent {
 	Button uploadItem;
 	Button deleteBtn;
 	HBox childWrapper;
+	ObservableList<Item> obs;
 	
 	public SellerHomeView(Stage stage, User user) {
 		super(user, stage);
 		init();
+		setTableItems();
 		this.stage.setScene(new Scene(this, 400, 600));
 		this.stage.setTitle("Home");
 		this.stage.show();
@@ -42,5 +44,6 @@ public class SellerHomeView extends HomeComponent {
 	@Override
 	public void setTableItems() {
 		this.obs = ItemController.viewItem("Item_status", "approved");
+		this.table.setItems(obs);
 	}
 }
